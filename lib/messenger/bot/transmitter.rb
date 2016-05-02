@@ -1,14 +1,17 @@
 module Messenger
   module Bot
     class Transmitter
+      
+      attr_accessor :sender_id
+
       def initialize(sender)
-        @sender_id = sender
+        self.sender_id = sender
       end
 
       def reply(data)
         data = {
           recipient: {
-            id: @sender_id
+            id: self.sender_id
           },
           message: data
         }
@@ -17,7 +20,7 @@ module Messenger
 
       def get_profile(fields = nil)
         fields ||= [:locale, :timezone, :gender, :first_name, :last_name, :profile_pic]
-        Messenger::Bot::Request.get("https://graph.facebook.com/v2.6/#{@sender_id}?fields=#{fields.join(",")}&access_token=#{Messenger::Bot::Config.access_token}")
+        Messenger::Bot::Request.get("https://graph.facebook.com/v2.6/#{self.sender_id}?fields=#{fields.join(",")}&access_token=#{Messenger::Bot::Config.access_token}")
       end
     end
   end
